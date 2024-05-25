@@ -4,8 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "vite build",
+    "build:css": "tailwindcss -i ./src/assets/main.css -o ./src/assets/output.css --watch",
     "preview": "vite preview"
   },
   "dependencies": {

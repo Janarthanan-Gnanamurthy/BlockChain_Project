@@ -35,37 +35,6 @@
 			{
 				"indexed": false,
 				"internalType": "uint256",
-				"name": "shipmentId",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "temperature",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "humidity",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "logTime",
-				"type": "uint256"
-			}
-		],
-		"name": "EnvironmentalDataLogged",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"internalType": "uint256",
 				"name": "id",
 				"type": "uint256"
 			},
@@ -209,7 +178,7 @@
 			{
 				"indexed": false,
 				"internalType": "address",
-				"name": "receiver",
+				"name": "buyer",
 				"type": "address"
 			},
 			{
@@ -242,6 +211,43 @@
 		"type": "event"
 	},
 	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "shipmentId",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "location",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "temperature",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "humidity",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "timestamp",
+				"type": "uint256"
+			}
+		],
+		"name": "ShipmentStatusUpdated",
+		"type": "event"
+	},
+	{
 		"inputs": [],
 		"name": "buyerCount",
 		"outputs": [
@@ -249,6 +255,25 @@
 				"internalType": "uint256",
 				"name": "",
 				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "buyerUsernames",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
 			}
 		],
 		"stateMutability": "view",
@@ -320,8 +345,23 @@
 			},
 			{
 				"internalType": "address",
-				"name": "_receiver",
+				"name": "_buyer",
 				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "_initialLocation",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_initialTemperature",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_initialHumidity",
+				"type": "uint256"
 			}
 		],
 		"name": "createShipment",
@@ -461,13 +501,18 @@
 						"type": "uint256"
 					},
 					{
-						"internalType": "address",
-						"name": "sender",
-						"type": "address"
+						"internalType": "string",
+						"name": "productName",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "manufacturerUsername",
+						"type": "string"
 					},
 					{
 						"internalType": "address",
-						"name": "receiver",
+						"name": "sender",
 						"type": "address"
 					},
 					{
@@ -481,14 +526,36 @@
 						"type": "bool"
 					},
 					{
-						"internalType": "uint256[]",
-						"name": "temperatureLog",
-						"type": "uint256[]"
+						"components": [
+							{
+								"internalType": "string",
+								"name": "location",
+								"type": "string"
+							},
+							{
+								"internalType": "uint256",
+								"name": "temperature",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "humidity",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "timestamp",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct MedicalSupplyChain.StatusUpdate[]",
+						"name": "statusUpdates",
+						"type": "tuple[]"
 					},
 					{
-						"internalType": "uint256[]",
-						"name": "humidityLog",
-						"type": "uint256[]"
+						"internalType": "address",
+						"name": "buyer",
+						"type": "address"
 					}
 				],
 				"internalType": "struct MedicalSupplyChain.Shipment[]",
@@ -502,22 +569,165 @@
 	{
 		"inputs": [
 			{
+				"internalType": "address",
+				"name": "_buyerAddress",
+				"type": "address"
+			}
+		],
+		"name": "getBuyerUsername",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_manufacturerAddress",
+				"type": "address"
+			}
+		],
+		"name": "getManufacturerUsername",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
 				"internalType": "uint256",
 				"name": "_shipmentId",
 				"type": "uint256"
 			}
 		],
-		"name": "getShipmentEnvironmentalData",
+		"name": "getShipmentStatusUpdates",
 		"outputs": [
 			{
-				"internalType": "uint256[]",
-				"name": "temperatureLog",
-				"type": "uint256[]"
-			},
+				"components": [
+					{
+						"internalType": "string",
+						"name": "location",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "temperature",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "humidity",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "timestamp",
+						"type": "uint256"
+					}
+				],
+				"internalType": "struct MedicalSupplyChain.StatusUpdate[]",
+				"name": "",
+				"type": "tuple[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
 			{
-				"internalType": "uint256[]",
-				"name": "humidityLog",
-				"type": "uint256[]"
+				"internalType": "address",
+				"name": "_buyerAddress",
+				"type": "address"
+			}
+		],
+		"name": "getShipmentsByBuyer",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "id",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "productId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "productName",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "manufacturerUsername",
+						"type": "string"
+					},
+					{
+						"internalType": "address",
+						"name": "sender",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "shipmentDate",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bool",
+						"name": "received",
+						"type": "bool"
+					},
+					{
+						"components": [
+							{
+								"internalType": "string",
+								"name": "location",
+								"type": "string"
+							},
+							{
+								"internalType": "uint256",
+								"name": "temperature",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "humidity",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "timestamp",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct MedicalSupplyChain.StatusUpdate[]",
+						"name": "statusUpdates",
+						"type": "tuple[]"
+					},
+					{
+						"internalType": "address",
+						"name": "buyer",
+						"type": "address"
+					}
+				],
+				"internalType": "struct MedicalSupplyChain.Shipment[]",
+				"name": "",
+				"type": "tuple[]"
 			}
 		],
 		"stateMutability": "view",
@@ -629,6 +839,25 @@
 				"internalType": "uint256",
 				"name": "",
 				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "manufacturerUsernames",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
 			}
 		],
 		"stateMutability": "view",
@@ -772,14 +1001,14 @@
 	{
 		"inputs": [
 			{
-				"internalType": "string",
-				"name": "_name",
-				"type": "string"
-			},
-			{
 				"internalType": "address",
 				"name": "_buyerAddress",
 				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "_username",
+				"type": "string"
 			}
 		],
 		"name": "registerBuyer",
@@ -790,14 +1019,14 @@
 	{
 		"inputs": [
 			{
-				"internalType": "string",
-				"name": "_name",
-				"type": "string"
-			},
-			{
 				"internalType": "address",
 				"name": "_manufacturerAddress",
 				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "_username",
+				"type": "string"
 			}
 		],
 		"name": "registerManufacturer",
@@ -821,6 +1050,44 @@
 		"name": "registerSeller",
 		"outputs": [],
 		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "registeredBuyers",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "registeredManufacturers",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -899,13 +1166,18 @@
 				"type": "uint256"
 			},
 			{
-				"internalType": "address",
-				"name": "sender",
-				"type": "address"
+				"internalType": "string",
+				"name": "productName",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "manufacturerUsername",
+				"type": "string"
 			},
 			{
 				"internalType": "address",
-				"name": "receiver",
+				"name": "sender",
 				"type": "address"
 			},
 			{
@@ -917,9 +1189,42 @@
 				"internalType": "bool",
 				"name": "received",
 				"type": "bool"
+			},
+			{
+				"internalType": "address",
+				"name": "buyer",
+				"type": "address"
 			}
 		],
 		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_shipmentId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_location",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_temperature",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_humidity",
+				"type": "uint256"
+			}
+		],
+		"name": "updateShipmentStatus",
+		"outputs": [],
+		"stateMutability": "nonpayable",
 		"type": "function"
 	}
 ]

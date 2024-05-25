@@ -60,7 +60,7 @@ const router = createRouter({
       component: () => import('../views/EnvironmentalDataDisplay.vue')
     },
     {
-      path: '/environmental-data-display',
+      path: '/environmental-data-display/:shipmentId',
       name: 'environmental-data',
       component: () => import('../views/EnvironmentalDataDisplay.vue')
     },
@@ -68,7 +68,12 @@ const router = createRouter({
       path: '/shipment-list',
       name: 'shipment-list',
       component: () => import('../views/ListShipments.vue')
-    }
+    },
+    {
+      path: '/orders',
+      name: 'orders',
+      component: () => import('../views/Orders.vue')
+    },
   ]
 })
 

@@ -26,7 +26,7 @@ export default {
 		async registerBuyer() {
 			const accounts = await web3.eth.getAccounts();
 			await contract.methods
-				.registerBuyer(this.name, this.address)
+				.registerBuyer(this.address,this.name)
 				.send({ from: accounts[0] });
 			alert("Buyer Registered");
 		},
